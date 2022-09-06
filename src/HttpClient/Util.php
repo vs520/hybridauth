@@ -52,7 +52,7 @@ class Util
             return call_user_func(static::$exitHandler);
         }
 
-        exit(1);
+       // exit(1);
     }
 
     /**
