@@ -300,7 +300,7 @@ abstract class OAuth2 extends AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function authenticate($server=[])
+    public function authenticate($param=[])
     {
         $this->logger->info(sprintf('%s::authenticate()', get_class($this)));
 
@@ -311,9 +311,7 @@ abstract class OAuth2 extends AbstractAdapter implements AdapterInterface
         try {
             $this->authenticateCheckError();
 
-            $code = filter_input($server['REQUEST_METHOD'] === 'POST' ? INPUT_POST : INPUT_GET, 'code');
-
-            if (empty($code)) {
+            if (empty($param['code'])) {
                 $this->authenticateBegin();
             } else {
                 $this->authenticateFinish();
@@ -407,10 +405,18 @@ abstract class OAuth2 extends AbstractAdapter implements AdapterInterface
             sprintf('%s::authenticateFinish(), callback url:', get_class($this)),
             [HttpClient\Util::getCurrentUrl(true)]
         );
-
-        $state = filter_input($_SERVER['REQUEST_METHOD'] === 'POST' ? INPUT_POST : INPUT_GET, 'state');
-        $code = filter_input($_SERVER['REQUEST_METHOD'] === 'POST' ? INPUT_POST : INPUT_GET, 'code');
-
+		$param = $this->config->get('param');
+		
+		if(isset($param['state'])){
+			$state = $param['state'];
+		}else{
+			$state = '';
+		}
+		if(isset($param['code'])){
+			$code = $param['code'];
+		}else{
+			$code = '';
+		}
         /**
          * Authorization Request State
          *
