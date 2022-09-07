@@ -46,13 +46,15 @@ class Util
             return call_user_func(static::$redirectHandler, $url);
         }
 
-        header(sprintf('Location: %s', $url));
-
+        //header(sprintf('Location: %s', $url));
+		echo "<meta http-equiv='refresh' content ='0;url=$url'>";
+		//return ['header_url'=>$url];
+		//echo $url;exit;
         if (static::$exitHandler) {
             return call_user_func(static::$exitHandler);
         }
-
-       // exit(1);
+		//return true;
+        //exit(1);
     }
 
     /**
