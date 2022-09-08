@@ -312,7 +312,7 @@ abstract class OAuth2 extends AbstractAdapter implements AdapterInterface
             $this->authenticateCheckError();
 
             if (empty($param['code'])) {
-                $this->authenticateBegin();
+                return ['auth_url'=>$this->authenticateBegin()];
             } else {
                 $this->authenticateFinish();
             }
@@ -387,7 +387,7 @@ abstract class OAuth2 extends AbstractAdapter implements AdapterInterface
         $authUrl = $this->getAuthorizeUrl();
 
         $this->logger->debug(sprintf('%s::authenticateBegin(), redirecting user to:', get_class($this)), [$authUrl]);
-
+		return $authUrl;
         HttpClient\Util::redirect($authUrl);
     }
 
